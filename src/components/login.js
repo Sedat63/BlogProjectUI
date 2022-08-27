@@ -1,8 +1,13 @@
 import React from 'react'
 import { Form, Input, Button } from "antd";
 import { Alert, Checkbox } from "antd";
+import { login_api } from '../api/user-api';
 
 export default function Login() {
+  function submitForm(user_form) {
+     login_api(user_form.username,user_form.password)
+    
+  }
   return (
     <div className="login-cart">
     {/* <Image
@@ -15,13 +20,13 @@ export default function Login() {
   labelCol={{ span: 8 }}
   wrapperCol={{ span: 8 }}
   initialValues={{ remember: true }}
-  //onFinish={onFinish}
+  onFinish={submitForm}
   //onFinishFailed={onFinishFailed}
   autoComplete="off"
 >
   <Form.Item
     label="Kullanıcı Adı"
-    name="Kullanıcı Adı"
+    name="username"
     rules={[{ required: true, message: "Kullanıcı adını giriniz!" }]}
   >
     <Input />
@@ -29,7 +34,7 @@ export default function Login() {
 
   <Form.Item
     label="Şifre"
-    name="Şifre"
+    name="password"
     rules={[{ required: true, message: "Şifrenizi giriniz!" }]}
   >
     <Input.Password />
