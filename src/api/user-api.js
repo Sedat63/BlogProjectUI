@@ -1,3 +1,4 @@
+import { request } from "../../../Logistic_UI-main/src/api/api";
 
 export function login_api(_username, _password) {
 
@@ -15,3 +16,4 @@ fetch("https://localhost:44363/user/login",{
 	});
 
 }
+

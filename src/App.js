@@ -1,13 +1,28 @@
 import "./App.css";
 import React from "react";
 import './style/login.css';
-import  Login  from './components/login';
-import Layout from "antd/lib/layout/layout";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
+import  AdminLayout  from './components/admin-pages/AdminLayout';
+import  HomePage  from './components/blog-pages/homepage/HomePage';
+import Login from "./components/admin-pages/Login";
+import Tag from "./components/admin-pages/AdminTag";
+import { adminBaseUrl } from "./helper/constant/route-constant";
+
 
 function App() {
   return (
-    <Login/>
-    // <Layout/>
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<HomePage />}/>
+      <Route path={adminBaseUrl} element={<AdminLayout />}> 
+              <Route path='admin-tag' element={<Tag/>} />
+      </Route>  
+    </Routes>
+  </BrowserRouter>
   );
 }
 
