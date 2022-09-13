@@ -1,1 +1,1 @@
-export const adminBaseUrl ="/yyyBlogyyy/AdminPanel"; 
+export const adminBaseUrl = "/yyyBlogyyy/AdminPanel";

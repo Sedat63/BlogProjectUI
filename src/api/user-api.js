@@ -1,4 +1,4 @@
-import { request } from "../../../Logistic_UI-main/src/api/api";
+import { request } from "../../src/api/api";
 
 export function login_api(_username, _password) {
 
@@ -12,8 +12,10 @@ fetch("https://localhost:44363/user/login",{
 })
 	.then((response) => response.json()) //parse json data
 	.then(function (result) {
-		console.log(result)
+		console.log(result) 
 	});
+
+
 
 }
 
