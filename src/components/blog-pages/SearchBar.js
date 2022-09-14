@@ -16,7 +16,7 @@ export default function SearchBar(props) {
       <form
         role="search"
         method="get"
-        class="searchform"
+        className="searchform"
         action="https://severn-wp.ecko.me/"
       >
         <input

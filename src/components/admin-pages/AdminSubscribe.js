@@ -24,13 +24,13 @@ import {
   DeleteOutlined,
 } from "@ant-design/icons";
 
-function AdminTag() {
+function AdminSubscriber() {
   //function component hook fark yoktur.
 
   //State  //degişken  //deger atama metodu
-  const [tags, setTags] = useState([]); //initial value
-  const [flags, setFlags] = useState({tagModalVisible: false, operationTitle: "",});
-  const [tagForm] = Form.useForm();
+  const [subscribers, setSubscribers] = useState([]); //initial value
+  const [flags, setFlags] = useState({subscriberModalVisible: false, operationTitle: "",});
+  const [subscriberForm] = Form.useForm();
   const formItemLayout = { labelCol: { span: 7 }, wrapperCol: { span: 17 } };
 
   useEffect(() => {
@@ -39,7 +39,7 @@ function AdminTag() {
 
   const getList = () => {
     dbTag.getList().then((result) => {
-      setTags(result.data);
+      setSubscribers(result.data);
     });
   };
 
@@ -51,25 +51,25 @@ function AdminTag() {
   const operationResult = (response) => {
     if(!response.successful){
       message.error(response.message);
-      tagForm.resetFields();
+      subscriberForm.resetFields();
       return;
     }
 
     message.success(response.message);
     getList();
-    setFlags({ ...flags, tagModalVisible: false });
-    tagForm.resetFields();
+    setFlags({ ...flags, subscriberModalVisible: false });
+    subscriberForm.resetFields();
   };
 
-  const deleteTag = (id) => {
+  const deleteSubscriber = (id) => {
     dbTag.deleteTag(id).then((response) => {
       message.success(response.message);
       getList();
     });
   };
 
-  const fillTagForm = (tag) => {
-    tagForm.setFieldsValue(tag);
+  const fillSubscriberForm = (tag) => {
+    subscriberForm.setFieldsValue(tag);
   };
 
   const columns = [
@@ -87,13 +87,13 @@ function AdminTag() {
             <Button
               icon={<EditOutlined />}
               onClick={() => {
-                tagForm.resetFields();
+                subscriberForm.resetFields();
                 setFlags({
                   ...flags,
-                  tagModalVisible: true,
+                  subscriberModalVisible: true,
                   operationTitle: "Update",
                 });
-                fillTagForm(tag);
+                fillSubscriberForm(tag);
               }}
             />
           </Tooltip>
@@ -101,7 +101,7 @@ function AdminTag() {
             <Popconfirm
               title="Silmek İstediğinize Emin Misiniz ?"
               onConfirm={() => {
-                deleteTag(tag.id);
+                deleteSubscriber(tag.id);
               }}
               okText={"EVET"}
               cancelText={"HAYIR"}
@@ -118,10 +118,10 @@ function AdminTag() {
     <Button
       type="primary"
       onClick={() => {
-        tagForm.resetFields();
+        subscriberForm.resetFields();
         setFlags({
           ...flags,
-          tagModalVisible: true,
+          subscriberModalVisible: true,
           operationTitle: "EKLE",
         });
       }}
@@ -151,30 +151,30 @@ function AdminTag() {
           key="1"
         >
           <div className="site-card-border-less-wrapper">
-            <Table bordered size="small" columns={columns} dataSource={tags} />
+            <Table bordered size="small" columns={columns} dataSource={subscribers} />
           </div>
         </Tabs.TabPane>
       </Tabs>
 
       <Modal
         title={tag_str}
-        visible={flags.tagModalVisible}
+        visible={flags.subscriberModalVisible}
         onCancel={() =>
           setFlags({
             ...flags,
-            tagModalVisible: false,
+            subscriberModalVisible: false,
             operationTitle: "EKLE",
           })
         }
         onOk={() => {
-          tagForm.submit();
+          subscriberForm.submit();
         }}
         okText={flags.operationTitle}
         cancelText={cancel_str}
         // confirmLoading={loading}
       >
         <Form
-          form={tagForm}
+          form={subscriberForm}
           layout={"horizontal"}
           onFinish={addOrUpdate}
           {...formItemLayout}
@@ -197,4 +197,4 @@ function AdminTag() {
   );
 }
 
-export default AdminTag;
+export default AdminSubscriber;

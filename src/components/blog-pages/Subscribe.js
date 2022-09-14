@@ -1,18 +1,31 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button } from "antd";
-
-import React from "react";
+import { Button,Form,Input,message} from "antd";
+import React,{useEffect,useState} from "react";
+import {add} from "../../api/subscribe-api";
 
 export default function Subscribe() {
+ const [subscribeForm] = Form.useForm();
+
+const submit = (subscribe) =>{
+  add(subscribe).then(response => {
+    if(!response.successful){
+      message.error(response.message);
+      return;
+    } 
+      message.success(response.message,4);
+      subscribeForm.resetFields();
+  })
+}
+
   return (
     <>
       <section className="widget subscribe">
         <div className="inner">
-          <h3 className="widget-title">Subscribe</h3>
+          <h3 className="widget-title">Abone Ol</h3>
           <hr />
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Abone olarak blog daki yeni makale ve gelişmelerden haberdar olabilirsiniz. Kayıt olunan email'inize
+            gelişmeler mail olarak gönderilecektir. 
           </p>
           <FontAwesomeIcon
             id="envelope"
@@ -21,14 +34,13 @@ export default function Subscribe() {
           />
           <div id="mc_embed_signup">
             {" "}
-            <form
-              action="//ecko.us3.list-manage.com/subscribe/post?u=3400c3c16c4c01c737e9aafdf%26id=831bd8b0f3"
-              method="post"
+            <Form
+              form={subscribeForm}
+              onFinish={submit}
               id="mc-embedded-subscribe-form"
               name="mc-embedded-subscribe-form"
               className="validate"
               target="_blank"
-              noValidate
             >
               {" "}
               <div id="mc_embed_signup_scroll">
@@ -36,13 +48,21 @@ export default function Subscribe() {
                 <div className="mc-field-group">
                   {" "}
                   <label htmlFor="mce-EMAIL">Email Address </label>{" "}
-                  <input
+                  <Form.Item name={"id"}  hidden={true} initialValue={0} ><Input /></Form.Item>
+                  <Form.Item 
+                  noStyle
+                  name={"email"}
+                  rules={[{type: 'email',message:'is not a valid email!' },
+                          {required: true}]}
+                  >
+                  <Input
+                    style={{position:"static"}}
                     type="email"
-                    name="EMAIL"
-                    className="required email"
                     id="mce-EMAIL"
                     placeholder="Email Address..."
-                  />{" "}
+                  />
+                  </Form.Item>
+                  {" "}
                 </div>{" "}
                 <div id="mce-responses" className="clear">
                   {" "}
@@ -57,25 +77,17 @@ export default function Subscribe() {
                     style={{ display: "none" }}
                   />{" "}
                 </div>{" "}
-                {/* real people should not fill this in and expect good things - do not remove this or risk form bot signups*/}{" "}
-                <div style={{ position: "absolute", left: "-5000px" }}>
-                  <input
-                    type="text"
-                    name="b_3400c3c16c4c01c737e9aafdf_831bd8b0f3"
-                    tabIndex={-1}
-                    defaultValue
-                  />
-                </div>{" "}
                 <div className="clear">
                   <Button
                     type="primary"
+                    htmlType="submit"
                     shape="circle"
                     icon={<FontAwesomeIcon icon="fa-solid fa-chevron-right" />}
                     size={"medium"}
                   />
                 </div>{" "}
               </div>{" "}
-            </form>{" "}
+            </Form>{" "}
           </div>{" "}
         </div>
       </section>

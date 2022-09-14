@@ -4,8 +4,9 @@ import React, { useState } from "react";
 import "moment/locale/tr";
 import tr_TR from "antd/lib/locale/tr_TR";
 import { adminBaseUrl } from "../../helper/constant/route-constant";
-import Tag from "./AdminTag";
+import AdminTag from "./AdminTag";
 import { Outlet, Link } from "react-router-dom";
+import  "../../style/AdminLayout.css";
 
 const { Header, Sider, Content, Footer } = Ants_Layout;
 const { SubMenu } = Menu;

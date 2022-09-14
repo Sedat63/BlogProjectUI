@@ -3,38 +3,38 @@ import React from "react";
 
 export default function Profile() {
   return (
-    <section class="author-profile">
+    <section className="author-profile">
       <div
-        class="info"
-        itemprop="author"
-        itemscope=""
-        itemtype="http://schema.org/Person"
+        className="info"
+        itemProp="author"
+        itemScope=""
+        itemType="http://schema.org/Person"
       >
         <a
           href="https://severn-wp.ecko.me/author/miker/"
-          class="profile gravatar"
+          className="profile gravatar"
         >
           <img
             src="https://severn-wp.ecko.me/wp-content/uploads/2017/10/cropped-miker-150x150.jpg"
-            itemprop="image"
+            itemProp="image"
             alt="Mike Ross"
             data-no-retina="true"
           />
         </a>
-        <div class="meta">
-          <span class="title">Author</span>
+        <div className="meta">
+          <span className="title">Author</span>
           <a
             href="http://twitter.com/EckoThemes"
             target="_blank"
-            class="twittertag"
+            className="twittertag"
             rel="noreferrer"
           >
             @EckoThemes
           </a>{" "}
-          <h3 itemprop="name">
+          <h3 itemProp="name">
             <a
               href="https://severn-wp.ecko.me/author/miker/"
-              itemprop="url"
+              itemProp="url"
               rel="author"
             >
               Mike Ross
@@ -47,12 +47,12 @@ export default function Profile() {
         The most brilliant lawyer in New York City doesn't even have a degree.
         Currently employed as Harvey Specters associate.
       </p>
-      <ul class="authorsocial">
+      <ul className="authorsocial">
         <li>
           <a
             href="http://twitter.com/EckoThemes"
             target="_blank"
-            class="socialminimal twitter"
+            className="socialminimal twitter"
             title="Twitter"
             rel="noreferrer"
           >
@@ -63,7 +63,7 @@ export default function Profile() {
           <a
             href="http://facebook.com"
             target="_blank"
-            class="socialminimal facebook"
+            className="socialminimal facebook"
             title="Facebook"
             rel="noreferrer"
           >
@@ -74,7 +74,7 @@ export default function Profile() {
           <a
             href="http://github.com"
             target="_blank"
-            class="socialminimal github"
+            className="socialminimal github"
             title="GitHub"
             rel="noreferrer"
           >
