@@ -1,7 +1,21 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import * as apiSocialMedia from "../../api/socialmedia-api";
+import React,{useEffect,useState} from "react";
 
 export default function Profile() {
+
+  const [socialMedia, setSocialMedia] = useState([]); //initial value
+
+  useEffect(() => {
+    getList();
+  }, []); //Tek sefer çalış document ready
+
+  const getList = () => {
+    apiSocialMedia.getList().then((result) => {
+      setSocialMedia(result.data);
+    });
+  };
+
   return (
     <section className="author-profile">
       <div
@@ -48,39 +62,20 @@ export default function Profile() {
         Currently employed as Harvey Specters associate.
       </p>
       <ul className="authorsocial">
-        <li>
-          <a
-            href="http://twitter.com/EckoThemes"
-            target="_blank"
-            className="socialminimal twitter"
-            title="Twitter"
-            rel="noreferrer"
-          >
-            <FontAwesomeIcon icon="fa-brands fa-twitter" />
-          </a>
-        </li>
-        <li>
-          <a
-            href="http://facebook.com"
-            target="_blank"
-            className="socialminimal facebook"
-            title="Facebook"
-            rel="noreferrer"
-          >
-            <FontAwesomeIcon icon="fa-brands fa-facebook-f" />
-          </a>
-        </li>
-        <li>
-          <a
-            href="http://github.com"
-            target="_blank"
-            className="socialminimal github"
-            title="GitHub"
-            rel="noreferrer"
-          >
-            <FontAwesomeIcon icon="fa-brands fa-github" />
-          </a>
-        </li>
+      {
+            socialMedia.map(x=>
+              <li>
+              <a
+                href={x.link}
+                target="_blank"
+                title={x.title}
+                className={`socialminimal ${x.className}`}
+              >
+                <FontAwesomeIcon icon={x.icon} />
+              </a>
+            </li>
+            )
+          }
       </ul>
     </section>
   );

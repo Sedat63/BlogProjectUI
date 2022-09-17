@@ -1,44 +1,41 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button } from "antd";
-
-import React from "react";
+import React,{useEffect,useState} from "react";
+import * as apiSocialMedia from "../../api/socialmedia-api";
 
 export default function SidebarSocialMedia() {
+
+  const [socialMedia, setSocialMedia] = useState([]); //initial value
+
+  useEffect(() => {
+    getList();
+  }, []); //Tek sefer çalış document ready
+
+  const getList = () => {
+    apiSocialMedia.getList().then((result) => {
+      setSocialMedia(result.data);
+    });
+  };
+
   return (
     <>
       <section className="widget social">
         <nav className="social">
           <ul>
-            <li>
+          {
+            socialMedia.map(x=>
+              <li>
               <a
-                href="http://twitter.com"
+                href={x.link}
                 target="_blank"
-                title="Twitter"
-                className="socialdark twitter"
+                title={x.title}
+                className={`socialdark ${x.className}`}
               >
-                <FontAwesomeIcon icon="fa-brands fa-twitter" />
+                <FontAwesomeIcon icon={x.icon} />
               </a>
             </li>
-            <li>
-              <a
-                href="http://facebook.com"
-                target="_blank"
-                title="Facebook"
-                className="socialdark facebook"
-              >
-                <FontAwesomeIcon icon="fa-brands fa-facebook-f" />
-              </a>
-            </li>
-            <li>
-              <a
-                href="http://github.com"
-                target="_blank"
-                title="Github"
-                className="socialdark github"
-              >
-                <FontAwesomeIcon icon="fa-brands fa-github" />
-              </a>
-            </li>
+            )
+          }
+         
           </ul>
         </nav>
       </section>

@@ -10,10 +10,10 @@ import {
   message,
   Popconfirm,
 } from "antd";
-import * as apiSubscribe from "../../api/subscribe-api";
+import * as apiSocialMedia from "../../api/socialmedia-api";
 import {
-  subscriber_str,
-  subscriber_upper_str,
+  tag_str,
+  tag_upper_str,
   cancel_str,
   required_field_str,
 } from "../../helper/constant/global-constant";
@@ -24,13 +24,13 @@ import {
   DeleteOutlined,
 } from "@ant-design/icons";
 
-function AdminSubscriber() {
+function AdminSocialMedia() {
   //function component hook fark yoktur.
 
   //State  //degişken  //deger atama metodu
-  const [subscribers, setSubscribers] = useState([]); //initial value
-  const [flags, setFlags] = useState({subscriberModalVisible: false, operationTitle: "",});
-  const [subscriberForm] = Form.useForm();
+  const [socialMedia, setSocialMedia] = useState([]); //initial value
+  const [flags, setFlags] = useState({socialMediaModalVisible: false, operationTitle: "",});
+  const [socialMediaForm] = Form.useForm();
   const formItemLayout = { labelCol: { span: 7 }, wrapperCol: { span: 17 } };
 
   useEffect(() => {
@@ -38,63 +38,77 @@ function AdminSubscriber() {
   }, []); //Tek sefer çalış document ready
 
   const getList = () => {
-    apiSubscribe.getList().then((result) => {
-      setSubscribers(result.data);
+    apiSocialMedia.getList().then((result) => {
+      setSocialMedia(result.data);
     });
   };
 
-  const addOrUpdate = (subcriber) => {
-    if (subcriber.id === 0) apiSubscribe.add(subcriber).then(operationResult);
-    else apiSubscribe.update(subcriber).then(operationResult);
+  const addOrUpdate = (socialMedia) => {
+    if (socialMedia.id === 0) apiSocialMedia.add(socialMedia).then(operationResult);
+    else apiSocialMedia.update(socialMedia).then(operationResult);
   };
 
   const operationResult = (response) => {
-    debugger;
     if(!response.successful){
       message.error(response.message);
-      subscriberForm.resetFields();
+      socialMediaForm.resetFields();
       return;
     }
 
     message.success(response.message);
     getList();
-    setFlags({ ...flags, subscriberModalVisible: false });
-    subscriberForm.resetFields();
+    setFlags({ ...flags, socialMediaModalVisible: false });
+    socialMediaForm.resetFields();
   };
 
-  const deleteSubscriber = (id) => {
-    apiSubscribe.deleteSubscriber(id).then((response) => {
+  const deleteSocialMedia = (id) => {
+    apiSocialMedia.deleteSocialMedia(id).then((response) => {
       message.success(response.message);
       getList();
     });
   };
 
-  const fillSubscriberForm = (subcriber) => {
-    subscriberForm.setFieldsValue(subcriber);
+  const fillSocialMediaForm = (socialMedia) => {
+    socialMediaForm.setFieldsValue(socialMedia);
   };
 
   const columns = [
     {
-      title: "Abone Email",
-      dataIndex: "email",
-      key: "email",
+      title: "Etiket",
+      dataIndex: "title",
+      key: "Title",
+    },
+    {
+      title: "Link",
+      dataIndex: "link",
+      key: "Link",
+    },
+    {
+      title: "Css Class İsmi",
+      dataIndex: "className",
+      key: "className",
+    },
+    {
+      title: "Ikon",
+      dataIndex: "icon",
+      key: "Icon",
     },
     {
       key: "operations",
       width: 120,
-      render: (text, subcriber) => (
+      render: (text, tag) => (
         <>
           <Tooltip placement="top" color="blue" title={"GÜNCELLE"}>
             <Button
               icon={<EditOutlined />}
               onClick={() => {
-                subscriberForm.resetFields();
+                socialMediaForm.resetFields();
                 setFlags({
                   ...flags,
-                  subscriberModalVisible: true,
+                  socialMediaModalVisible: true,
                   operationTitle: "Update",
                 });
-                fillSubscriberForm(subcriber);
+                fillSocialMediaForm(tag);
               }}
             />
           </Tooltip>
@@ -102,7 +116,7 @@ function AdminSubscriber() {
             <Popconfirm
               title="Silmek İstediğinize Emin Misiniz ?"
               onConfirm={() => {
-                deleteSubscriber(subcriber.id);
+                deleteSocialMedia(tag.id);
               }}
               okText={"EVET"}
               cancelText={"HAYIR"}
@@ -119,10 +133,10 @@ function AdminSubscriber() {
     <Button
       type="primary"
       onClick={() => {
-        subscriberForm.resetFields();
+        socialMediaForm.resetFields();
         setFlags({
           ...flags,
-          subscriberModalVisible: true,
+          socialMediaModalVisible: true,
           operationTitle: "EKLE",
         });
       }}
@@ -139,43 +153,43 @@ function AdminSubscriber() {
   const onKeyChange = (key) => setActiveKey(key);
   return (
     <>
-      {/* subcriber */}
+      {/* Tag */}
 
       <Tabs defaultActiveKey="1" tabBarExtraContent={header}>
         <Tabs.TabPane
           tab={
             <span className="tabHeaderTitle">
               <UserOutlined />
-              {subscriber_upper_str}
+              {tag_upper_str}
             </span>
           }
           key="1"
         >
           <div className="site-card-border-less-wrapper">
-            <Table bordered size="small" columns={columns} dataSource={subscribers} />
+            <Table bordered size="small" columns={columns} dataSource={socialMedia} />
           </div>
         </Tabs.TabPane>
       </Tabs>
 
       <Modal
-        title={subscriber_str}
-        visible={flags.subscriberModalVisible}
+        title={tag_str}
+        visible={flags.socialMediaModalVisible}
         onCancel={() =>
           setFlags({
             ...flags,
-            subscriberModalVisible: false,
+            socialMediaModalVisible: false,
             operationTitle: "EKLE",
           })
         }
         onOk={() => {
-          subscriberForm.submit();
+          socialMediaForm.submit();
         }}
         okText={flags.operationTitle}
         cancelText={cancel_str}
         // confirmLoading={loading}
       >
         <Form
-          form={subscriberForm}
+          form={socialMediaForm}
           layout={"horizontal"}
           onFinish={addOrUpdate}
           {...formItemLayout}
@@ -186,11 +200,32 @@ function AdminSubscriber() {
             <Input />
           </Form.Item>
           <Form.Item
-            label={"Email"}
-            name="email"
+            label={"Etiket"}
+            name="title"
             rules={[{ required: true, message: required_field_str }]}
           >
-            <Input placeholder={"Email"} />
+            <Input placeholder={"Etiket"} />
+          </Form.Item>
+          <Form.Item
+            label={"Link"}
+            name="link"
+            rules={[{ required: true, message: required_field_str }]}
+          >
+            <Input placeholder={"Link"} />
+          </Form.Item>
+          <Form.Item
+            label={"CSS Class"}
+            name="className"
+            rules={[{ required: true, message: required_field_str }]}
+          >
+            <Input placeholder={"CSS Class"} />
+          </Form.Item>
+          <Form.Item
+            label={"İkon"}
+            name="icon"
+            rules={[{ required: true, message: required_field_str }]}
+          >
+            <Input placeholder={"İkon"} />
           </Form.Item>
         </Form>
       </Modal>
@@ -198,4 +233,4 @@ function AdminSubscriber() {
   );
 }
 
-export default AdminSubscriber;
+export default AdminSocialMedia;

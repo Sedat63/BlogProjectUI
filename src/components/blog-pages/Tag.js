@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "antd";
-import * as dbTag from "../../api/tag-api";
+import * as apiTag from "../../api/tag-api";
 import React,{useEffect,useState} from "react";
 
 export default function Tag() {
@@ -12,7 +12,7 @@ export default function Tag() {
     getList();
   }, []); //Tek sefer çalış document ready
   const getList = () => {
-    dbTag.getList().then((result) => {
+    apiTag.getList().then((result) => {
       setTags(result.data);
     });
   };

@@ -68,6 +68,17 @@ export default function AdminLayout() {
                   ETİKET
                 </Link>
               </Menu.Item>
+              <Menu.Item key={"subscribe"}>
+                <Link to={adminBaseUrl + "/admin-subscribe"} title="subscribe">
+                  ABONELER
+                </Link>
+              </Menu.Item>
+              <Menu.Item key={"socialmedia"}>
+                <Link to={adminBaseUrl + "/admin-socialmedia"} title="socialmedia">
+                  SOSYAL MEDYA
+                </Link>
+              </Menu.Item>
+             
             </SubMenu>
             <Menu.Item icon={<LogoutOutlined />} key={"Menu.Logout"}>
               {/* <Link to={'/BackOffice/Logout'}> */}
