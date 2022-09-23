@@ -8,9 +8,20 @@ export default function AdminCategory() {
     const [categories, setCategories] = useState([]); //initial value
     const [categoryModalVisible, setCategoryModalVisible] = useState(false); //initial value
 
-    const handleClose = () => setCategoryModalVisible(false);
+    const [category, setCategory] = useState({categoryName:"",description:""}); //initial value
+
+    const submit = () => {
+      // 3. addCategory();
+      //GetList
+      //setCategoryVisible Kapat
+    }
     const handleShow = () => setCategoryModalVisible(true);
     
+   const handleCategoryChange=()=>{
+    
+    // 2. setCategory
+   }
+
     useEffect(() => {
         getList();
       }, []); //Tek sefer çalış document ready
@@ -56,12 +67,16 @@ onHide={handleClose}>
 <Modal.Header closeButton>
   <Modal.Title>Modal heading</Modal.Title>
 </Modal.Header>
-<Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+<Modal.Body>
+  
+{/* Form 1. <Input onchange></Input> */}
+
+</Modal.Body>
 <Modal.Footer>
   <Button variant="secondary" onClick={handleClose}>
     Close
   </Button>
-  <Button variant="primary" onClick={handleClose}>
+  <Button variant="primary" onClick={submit}>
     Save Changes
   </Button>
 </Modal.Footer>
