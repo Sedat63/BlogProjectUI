@@ -57,10 +57,21 @@ export default function AdminLayout() {
               icon={<SwapOutlined />}
               title={"İŞLEMLER"}
             >
+               <Menu.Item key={"user"}>
+                <Link to={adminBaseUrl + "/admin-user"} title="user">
+                  {" "}
+                  KULLANICI-PROFİL
+                </Link>
+              </Menu.Item>
               <Menu.Item key={"article"}>
-                <Link to={adminBaseUrl + "/article"} title="article">
+                <Link to={adminBaseUrl + "/admin-article"} title="article">
                   {" "}
                   MAKALE
+                </Link>
+              </Menu.Item>
+              <Menu.Item key={"category"}>
+                <Link to={adminBaseUrl + "/admin-category"} title="category">
+                  KATEGORİLER
                 </Link>
               </Menu.Item>
               <Menu.Item key={"tag"}>
@@ -78,7 +89,6 @@ export default function AdminLayout() {
                   SOSYAL MEDYA
                 </Link>
               </Menu.Item>
-             
             </SubMenu>
             <Menu.Item icon={<LogoutOutlined />} key={"Menu.Logout"}>
               {/* <Link to={'/BackOffice/Logout'}> */}

@@ -1,21 +1,34 @@
-import { request } from "../../src/api/api";
+import { request, uploadFile } from "../../src/api/api";
 
-export function login_api(_username, _password) {
+
+export async function uploadImage(image) {
+    return await uploadFile(`user/UpdateUserImage`, "POST", image);
+  }
+
+  export async function get() {
+    return await request(`user/get`, "GET");
+  }
+
+  export async function update(user) {
+    return await request(`user/updateUser`, "POST", user);
+  }
+
+  export async function login(_username, _password) {
 
     const user = {username:_username, password:_password};
     
+    return await request(`auth/login`, "POST", user)
+}
 
-fetch("https://localhost:44363/user/login",{
-    method: "POST",
-    body: JSON.stringify(user),
-    headers: {"Content-type": "application/json; charset=UTF-8"}
-})
-	.then((response) => response.json()) //parse json data
-	.then(function (result) {
-		console.log(result) 
-	});
+export  const saveUserLogin = (token) =>{
+  debugger;
+localStorage.setItem("token",token);
+}
 
-
-
+export const isLogin = () => {
+   const token = localStorage.getItem("token");
+   const test = token ? true : false ;
+   debugger;
+   return token ? true : false ;
 }
 

@@ -1,13 +1,26 @@
 import React from 'react'
 import { Form, Input, Button } from "antd";
-import { Alert, Checkbox } from "antd";
-import { login_api } from '../../api/user-api';
+import {Checkbox } from "antd";
+import * as apiUser from '../../api/user-api';
+import { useNavigate } from 'react-router-dom';
+import { adminBaseUrl } from '../../helper/constant/route-constant';
 
 export default function Login() {
-  function submitForm(user_form) {
-     login_api(user_form.username,user_form.password)
+
+
+  let navigate = useNavigate();
+
+  const submitForm = (user_form) => {
+    apiUser.login(user_form.username,user_form.password).then(response=>{
+      if(response.successful){
+        apiUser.saveUserLogin(response.data.token)
+        debugger;
+        navigate(adminBaseUrl)
+      }
+    })
     
   }
+
   return (
     <div className="login-cart">
     {/* <Image

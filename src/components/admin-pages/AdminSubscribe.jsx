@@ -135,8 +135,7 @@ function AdminSubscriber() {
       <span style={{ verticalAlign: "middle" }}>{"EKLE"}</span>
     </Button>
   );
-  const [activeKey, setActiveKey] = React.useState("1");
-  const onKeyChange = (key) => setActiveKey(key);
+
   return (
     <>
       {/* subcriber */}

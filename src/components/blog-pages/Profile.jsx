@@ -1,18 +1,32 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as apiSocialMedia from "../../api/socialmedia-api";
+import * as apiUser from "../../api/user-api";
+
 import React,{useEffect,useState} from "react";
+import { apiUrl } from "../../helper/constant/api-constant";
 
 export default function Profile() {
 
   const [socialMedia, setSocialMedia] = useState([]); //initial value
+  const [user, setUser] = useState({}); //initial value
 
   useEffect(() => {
-    getList();
   }, []); //Tek sefer çalış document ready
 
-  const getList = () => {
+  useEffect(() => {
+    getSocialMedia();
+    getUser();
+  }, []); //Tek sefer çalış document ready
+
+  const getSocialMedia = () => {
     apiSocialMedia.getList().then((result) => {
       setSocialMedia(result.data);
+    });
+  };
+
+  const getUser = () => {
+    apiUser.get().then((result) => {
+      setUser(result.data);
     });
   };
 
@@ -25,13 +39,13 @@ export default function Profile() {
         itemType="http://schema.org/Person"
       >
         <a
-          href="https://severn-wp.ecko.me/author/miker/"
+          href="#"
           className="profile gravatar"
         >
           <img
-            src="https://severn-wp.ecko.me/wp-content/uploads/2017/10/cropped-miker-150x150.jpg"
+            src={apiUrl+user.imagePath}
             itemProp="image"
-            alt="Mike Ross"
+            alt={user.fullName}
             data-no-retina="true"
           />
         </a>
@@ -43,7 +57,7 @@ export default function Profile() {
             className="twittertag"
             rel="noreferrer"
           >
-            @EckoThemes
+           {user.title}
           </a>{" "}
           <h3 itemProp="name">
             <a
@@ -51,15 +65,14 @@ export default function Profile() {
               itemProp="url"
               rel="author"
             >
-              Mike Ross
+             {user.fullName}
             </a>
           </h3>
         </div>
       </div>
       <hr />
       <p>
-        The most brilliant lawyer in New York City doesn't even have a degree.
-        Currently employed as Harvey Specters associate.
+        {user.description}
       </p>
       <ul className="authorsocial">
       {

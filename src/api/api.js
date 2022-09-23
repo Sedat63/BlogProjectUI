@@ -1,4 +1,5 @@
-import { Alert, message } from "antd";
+import {  message } from "antd";
+import { apiUrl, uploadType } from "../helper/constant/api-constant";
 import { HttpStatusCode } from "../helper/enums";
 
 /**
@@ -7,9 +8,9 @@ import { HttpStatusCode } from "../helper/enums";
  */
 
 export async function request(uri, method, body) {
-  debugger;
+
   let token = localStorage.getItem("token");
-  return await fetch(`https://localhost:44363/${uri}`, {
+  return await fetch(`${apiUrl}${uri}`, {
     method: method || "GET",
     headers: {
       "Content-Type": "application/json; charset=utf-8",
@@ -29,7 +30,7 @@ export async function request(uri, method, body) {
 export async function downloadFile(uri, method, body, fileName = "") {
   let token = localStorage.getItem("token");
 
-  return await fetch(`https://localhost:44366/${uri}`, {
+  return await fetch(`${apiUrl}${uri}`, {
     method: method || "GET",
     headers: {
       "Content-Type": "application/json; charset=utf-8",
@@ -58,14 +59,36 @@ const handleResponse = (response) => {
   switch (response.status) {
     case HttpStatusCode.Ok:
       return response.json();
+   case HttpStatusCode.InternalServerError:
+      message.error("Internal Server Error");
+      break;
     case HttpStatusCode.Unauthorized:
-      Alert("Yetkisiz Giriş");
+      message.error("Yetkisiz Giriş");
       break;
     case HttpStatusCode.NotFound:
-      Alert("SAYFA BULUNAMADİ");
+      message.error("SAYFA BULUNAMADİ");
       break;
     case HttpStatusCode.BadRequest:
-      Alert("BAD REQUEST");
+      message.error("BAD REQUEST");
       break;
   }
 };
+
+
+export async function uploadFile(uri, method, file) {
+  
+  let token = localStorage.getItem("token");
+  return await fetch(`${apiUrl}${uri}`, {
+    method: method,
+    headers: {
+      Authorization: "Bearer " + (token || ""),
+    },
+    body: file,
+  })
+    .then((response) => handleResponse(response))
+    .catch((error) => {
+      message.error(error);
+      console.error("Bir hata oluştu");
+      throw error;
+    });
+}
