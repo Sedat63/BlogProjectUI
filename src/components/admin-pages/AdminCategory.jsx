@@ -3,24 +3,41 @@ import * as apiCategory from "../../api/category-api";
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { message } from 'antd';
 
 export default function AdminCategory() {
     const [categories, setCategories] = useState([]); //initial value
     const [categoryModalVisible, setCategoryModalVisible] = useState(false); //initial value
+    const [categoryName, setCategoryName] = useState(""); //initial value
+    const [description, setDescription] = useState(""); //initial value
+    const [id, setId] = useState(0); //initial value
 
-    const [category, setCategory] = useState({categoryName:"",description:""}); //initial value
 
     const submit = () => {
-      // 3. addCategory();
-      //GetList
-      //setCategoryVisible Kapat
+      if(!categoryName || !description  ){
+        message.warning({
+          content: 'Alanları doldurunuz',
+          style: {
+            marginTop: '20vh',
+          },
+        });
+        return; 
+      } 
+      const category = {categoryName,description}
+      apiCategory.addCategory(category).then(response => {
+        if(response.succesfull){
+          getList();
+        }
+      });
+      handleClose();
     }
+    function abc(a){
+
+    }
+
     const handleShow = () => setCategoryModalVisible(true);
-    
-   const handleCategoryChange=()=>{
-    
-    // 2. setCategory
-   }
+    const handleClose = () => setCategoryModalVisible(false);
+
 
     useEffect(() => {
         getList();
@@ -65,19 +82,43 @@ export default function AdminCategory() {
 show={categoryModalVisible}
 onHide={handleClose}>
 <Modal.Header closeButton>
-  <Modal.Title>Modal heading</Modal.Title>
+  <Modal.Title>Kategori</Modal.Title>
 </Modal.Header>
 <Modal.Body>
-  
-{/* Form 1. <Input onchange></Input> */}
-
+       <div className="mb-3">
+              <label
+                htmlFor="categoryName"
+                className="form-label"
+              >
+                Kategori Adı
+              </label>
+              <input
+                type="categoryName"
+                className="form-control"
+                id="categoryName"
+                placeholder="Kategori Adı Giriniz"
+                onChange={(e) => setCategoryName(e.target.value)}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="description" className="form-label">
+                Açıklama
+              </label>
+              <input
+                type="description"
+                className="form-control"
+                id="description"
+                placeholder="Açıklama Giriniz"
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
 </Modal.Body>
 <Modal.Footer>
   <Button variant="secondary" onClick={handleClose}>
-    Close
+    Kapat
   </Button>
   <Button variant="primary" onClick={submit}>
-    Save Changes
+    Ekle
   </Button>
 </Modal.Footer>
 </Modal>
