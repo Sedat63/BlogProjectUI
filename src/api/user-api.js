@@ -21,7 +21,6 @@ export async function uploadImage(image) {
 }
 
 export  const saveUserLogin = (token) =>{
-  debugger;
 localStorage.setItem("token",token);
 }
 

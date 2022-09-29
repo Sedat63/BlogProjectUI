@@ -7,11 +7,15 @@ import { adminBaseUrl } from "../../helper/constant/route-constant";
 import AdminTag from "./AdminTag";
 import { Outlet, Link } from "react-router-dom";
 import  "../../style/AdminLayout.css";
+import { useDispatch } from "react-redux";
+import { logout } from "../../redux/store";
 
 const { Header, Sider, Content, Footer } = Ants_Layout;
 const { SubMenu } = Menu;
 
 export default function AdminLayout() {
+  // const navigate = useNavigate();
+  const dispatch = useDispatch();
   // eslint-disable-next-line react/jsx-pascal-case
   return (
     <ConfigProvider locale={tr_TR}>
@@ -90,7 +94,12 @@ export default function AdminLayout() {
                 </Link>
               </Menu.Item>
             </SubMenu>
-            <Menu.Item icon={<LogoutOutlined />} key={"Menu.Logout"}>
+            <Menu.Item icon={<LogoutOutlined />} 
+            onClick={()=>{
+              dispatch(logout())
+              // navigate(adminBaseUrl)
+            }}
+            key={"Menu.Logout"}>
               {/* <Link to={'/BackOffice/Logout'}> */}
               ÇIKIŞ
               {/* </Link> */}

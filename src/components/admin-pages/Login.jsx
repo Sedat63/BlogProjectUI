@@ -4,17 +4,19 @@ import {Checkbox } from "antd";
 import * as apiUser from '../../api/user-api';
 import { useNavigate } from 'react-router-dom';
 import { adminBaseUrl } from '../../helper/constant/route-constant';
+import { useDispatch } from 'react-redux';
+import { login } from '../../redux/store';
 
 export default function Login() {
 
 
-  let navigate = useNavigate();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const submitForm = (user_form) => {
     apiUser.login(user_form.username,user_form.password).then(response=>{
       if(response.successful){
-        apiUser.saveUserLogin(response.data.token)
-        debugger;
+        dispatch(login(response.data.token))
         navigate(adminBaseUrl)
       }
     })

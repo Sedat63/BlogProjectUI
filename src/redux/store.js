@@ -1,46 +1,27 @@
-// third-party
-import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
+import { createSlice, configureStore } from '@reduxjs/toolkit'
 
-// reducer
-import rootReducer from './rootReducer';
-import version from './version';
-
-function load() {
-    let state;
-
-    try {
-        state = localStorage.getItem('state');
-
-        if (typeof state === 'string') {
-            state = JSON.parse(state);
-        }
-
-        if (state && state.version !== version) {
-            state = undefined;
-        }
-    } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(error);
+const authenticate = createSlice(
+  {name: 'login', initialState: {token:localStorage.getItem("token")},
+  reducers: {
+    login: (state,action) => {
+        localStorage.setItem("token",action.payload)
+        state.token = action.payload;
+    },
+    logout: (state,action) => {
+       localStorage.removeItem('token');
+       state.token = null;
     }
+  }
+})
+export const { login,logout } = authenticate.actions
 
-    return state || undefined;
-}
+export const store = configureStore({
+  reducer: authenticate.reducer
+})
 
-const store = createStore(rootReducer, load(), compose(
-    applyMiddleware(thunk),
-    // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-));
+export default authenticate.recuder;
 
-function save() {
-    try {
-        localStorage.setItem('state', JSON.stringify(store.getState()));
-    } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(error);
-    }
-}
 
-store.subscribe(() => save());
 
-export default store;
+
+

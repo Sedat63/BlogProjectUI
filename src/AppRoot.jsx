@@ -10,26 +10,35 @@ import AdminSocialMedia from "./components/admin-pages/AdminSocialMedia";
 import { adminBaseUrl } from "./helper/constant/route-constant";
 import AdminUser from "./components/admin-pages/AdminUser";
 import AdminCategory from "./components/admin-pages/AdminCategory";
+import { useSelector } from "react-redux";
+import Login from "./components/admin-pages/Login";
+import AdminArticle from "./components/admin-pages/article/AdminArticle";
+import AdminArticleAddOrUpdate from "./components/admin-pages/article/AdminArticleAddOrUpdate";
 
 function AppRoot() {
-  // const [token, setToken] = React.useState(apiUser.isLogin());
+  
+  const isLogin = useSelector(state => state.token)
 
-  // const handleLogin = async () => {
-  //   const token = await fakeAuth();
-
-  //   setToken(token);
-  // };
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage /> } />
-        <Route path={`${adminBaseUrl}`} element={ <AdminLayout />}>
+
+        {isLogin ?  
+        <Route path={`${adminBaseUrl}/*`} element={ <AdminLayout />}>
           <Route path="admin-tag" element={<AdminTag />} />
           <Route path="admin-subscribe" element={<AdminSubscribe />} />
           <Route path="admin-socialmedia" element={<AdminSocialMedia />} />
           <Route path="admin-user" element={<AdminUser />} />
+          <Route path="admin-article" element={<AdminArticle />}>
+          </Route>
+          <Route path="add" element={<AdminArticleAddOrUpdate />} />
+          <Route path="admin-user" element={<AdminUser />} />
           <Route path="admin-category" element={<AdminCategory />} />
-        </Route> 
+        </Route>
+        :
+        <Route path={`${adminBaseUrl}/*`} element={ <Login />}></Route>
+      }
       </Routes>
    </BrowserRouter>
   );

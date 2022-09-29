@@ -3,6 +3,7 @@ import * as apiCategory from "../../api/category-api";
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import { message } from 'antd';
 
 export default function AdminCategory() {

@@ -8,7 +8,6 @@ import { HttpStatusCode } from "../helper/enums";
  */
 
 export async function request(uri, method, body) {
-
   let token = localStorage.getItem("token");
   return await fetch(`${apiUrl}${uri}`, {
     method: method || "GET",

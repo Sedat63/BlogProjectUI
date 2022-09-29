@@ -34,6 +34,9 @@ function AdminUser() {
   const [user, setUser] = useState([]); //initial value
   const [flags, setFlags] = useState({userModalVisible: false, operationTitle: "",imageModalVisible:false});
   const [userForm] = Form.useForm();
+  const [profileForm] = Form.useForm();
+  const [profileImage,setProfileImage] = useState([])
+
   const formItemLayout = { labelCol: { span: 7 }, wrapperCol: { span: 17 } };
 
   useEffect(() => {
@@ -46,16 +49,21 @@ function AdminUser() {
     });
   };
 
-  const uploadImage = (image) => {
-    if (image.status !== 'uploading') { 
+  const uploadImage = (_profileForm) => {
+    debugger;
       const formData = new FormData()
       formData.append('id', 1)
-      formData.append('imageName', image.file.name)
-      formData.append('imageFile', image.file.originFileObj)
+      formData.append('imageName', _profileForm.image.file.name)
+      formData.append('imageFile', _profileForm.image.file)
       apiUser.uploadImage(formData).then(operationResult);
-    }
   };
-
+  const beforeUploadProfileImage = (file) => {
+    const isJPG = file.type === 'image/jpeg';
+    if (!isJPG) {
+      message.error('You can only upload JPG file!');
+    }
+    return false;
+   }
 
   const update = (user) => {
     apiUser.update(user).then(operationResult);
@@ -83,7 +91,7 @@ function AdminUser() {
       dataIndex: "imagePath",
       key: "username",
       render: (text, user) => (
-        <img src= {apiUrl+user.imagePath} className="img" alt="My image" style={{width: '75px',borderRadius:"50%"}} />
+        <img src= {apiUrl+user?.imagePath} className="img" alt="My image" style={{width: '75px',borderRadius:"50%"}} />
       )
     },
     {
@@ -134,6 +142,12 @@ function AdminUser() {
             <Button
               icon={<FileImageOutlined />}
               onClick={() => {
+                setProfileImage([{
+                  name:user?.imagePath,
+                  uid:user.id,
+                  url: apiUrl + user?.imagePath,
+                  status: 'done',
+                 }])
                 setFlags({
                   ...flags,
                   imageModalVisible: true,
@@ -172,6 +186,7 @@ function AdminUser() {
       <Modal
         title={user_str}
         visible={flags.imageModalVisible}
+        onOk={()=>profileForm.submit()}
         onCancel={() =>
           setFlags({
             ...flags,
@@ -181,11 +196,29 @@ function AdminUser() {
         cancelText={cancel_str}
         // confirmLoading={loading}
       >
-       <Upload 
-        onChange={uploadImage}
+     <Form
+          form={profileForm}
+          layout={"horizontal"}
+          onFinish={uploadImage}
+          size={"small"}
+          labelAlign={"left"}
         >
-        <Button icon={<UploadOutlined />}>Profil Resmi</Button>
-       </Upload>
+  <Form.Item 
+      name="image"
+      >
+      <Upload
+      type="select"
+      showUploadList={{showRemoveIcon:false}}
+      defaultFileList ={profileImage}
+      beforeUpload={beforeUploadProfileImage}
+      accept='.jpg'
+      listType="picture"
+      maxCount={1}
+    >
+      <Button icon={<UploadOutlined />}>Profil Resmi</Button>
+    </Upload>
+  </Form.Item>
+    </Form>
    </Modal>
   
 
